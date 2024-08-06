@@ -1,5 +1,3 @@
-from email.header import Header
-from math import e
 import random
 import sys
 import pygame
@@ -7,6 +5,10 @@ from pygame.math import Vector2
 from pygame.color import Color
 WIDTH = 1000
 HEIGHT = 800
+ENEMY_AMOUNT = 50
+ENEMY_SPEED = 5
+PLAYER_SPEED = 6
+
 
 class Object:
     def __init__(self, position: Vector2, screen, color=(255,255,255)):
@@ -62,7 +64,8 @@ font = pygame.font.SysFont('timesnewroman', 32)
 
 p = Player(Vector2(WIDTH/2,HEIGHT/2), 6, screen, Vector2(0,0))
 directions = [[x,y] for x in range(-1,2) for y in range(-1,2)]
-enemies = [Enemy(Vector2(10,10), 10, screen, Vector2(0,0)) for i in range(10)]
+starting_positions = [(15, 15), (WIDTH-15, 15), (15, HEIGHT-15), (WIDTH-15, HEIGHT-15)]
+enemies = [Enemy(Vector2(random.choice(starting_positions)), ENEMY_SPEED, screen, Vector2(0,0)) for i in range(ENEMY_AMOUNT)]
 enemy_moved = 0
 state_counter = 0
 enemie_move_threshold = random.randint(50,70)
@@ -120,13 +123,10 @@ while True:
     for enemy in enemies:
         enemy.move()
     
-
-    
-    
     for enemy in enemies:
         if p.position.distance_to(enemy.position) < 10:
             if enemy.state == 0:
-                print("Game Over!")
+                print(f"Game Over! Final score: {score}")
                 pygame.quit()
                 sys.exit()
             else:
