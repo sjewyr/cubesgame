@@ -5,22 +5,22 @@ from pygame.math import Vector2
 from pygame.color import Color
 WIDTH = 1000
 HEIGHT = 800
-ENEMY_AMOUNT = 12
+ENEMY_AMOUNT = 14
 ENEMY_SIZE = 10
 PLAYER_SIZE = 10
-ENEMY_SPEED_MAX = 11
-ENEMY_SPEED_MIN = 2
+ENEMY_SPEED_MAX = 7
+ENEMY_SPEED_MIN = 3
 ENEMY_SPEED_CHANGE_MAX = 0.6
 COLLISION_SIZE = 10 # Works stangely with less than 10
 ENEMY_SPEED = 5
 PLAYER_SPEED = 6
 CHAOTIC_MOVEMENT = 0.01 # Caps the enemys direction change in one tick
 MOVEMENT_THRESHOLD = 0.2 # Seconds till enemies change direction
-ATTACK_THRESHOLD = 0.9992 # Probability of attack
-ATTACK_SPEED_INCREASE = 3
+ATTACK_THRESHOLD = 0.9991 # Probability of attack
+ATTACK_SPEED_INCREASE = 4
 ATTACK_SIZE_INCREASE = 4
-ATTACK_DURATION = 25 # In frames
-WARN_DURATION = 60 # In frames
+ATTACK_DURATION = 10 # In frames
+WARN_DURATION = 90 # In frames
 
 class Object:
     def __init__(self, position: Vector2, screen, size, color=(255,255,255)):
@@ -206,7 +206,6 @@ while True:
                 elif 0 > enemy.warned > (-1*ATTACK_DURATION):
                     enemy.warned -= 1
                     enemy.direction = (p.position - enemy.position)
-                    print()
                 
                 elif enemy.warned == -1*ATTACK_DURATION:
                     enemy.deattack()
