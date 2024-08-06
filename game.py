@@ -1,3 +1,4 @@
+import enum
 import random
 import sys
 import pygame
@@ -25,7 +26,9 @@ PLAYER_SPRINT_SPEED = 25
 PLAYER_SPEED_DEACCELERATION = 1 # In pixels per frame
 PLAYER_SPRINT_COOLDOWN = 45 # In frames
 
-
+class EnemyState(enum.Enum):
+    ATTACK = 1
+    RUNAWAY = -1
 pygame.init()
 
 class Object:
@@ -59,14 +62,14 @@ class MovingObject(Object):
 class Enemy(MovingObject):
     def __init__(self, position: Vector2, speed: int, screen, size, direction: Vector2, color=(255,0,0)):
         super().__init__(position, speed, screen, size, direction, color)
-        self.state = 0
+        self.state = EnemyState.ATTACK
         self.warned = 0
     def change_state(self):
-        if self.state == 0:
-            self.state = 1
+        if self.state == EnemyState.ATTACK:
+            self.state = EnemyState.RUNAWAY
             self.color = (0,255,0)
         else:
-            self.state = 0
+            self.state = EnemyState.ATTACK
             self.color = (255,0,0)
     
     def warn_player(self):
@@ -82,7 +85,7 @@ class Enemy(MovingObject):
     def deattack(self):
         self.speed = ENEMY_SPEED
         self.size /= ATTACK_SIZE_INCREASE
-        self.color = (0,255,0) if self.state == 1 else (255,0,0)
+        self.color = (0,255,0) if self.state == EnemyState.RUNAWAY else (255,0,0)
     
     def draw(self):
         if self.warned:
@@ -138,6 +141,8 @@ class Game():
                             enemy.speed = ENEMY_SPEED_MIN
                         enemy.direction.x += random.random()*random.choice(rands)*CHAOTIC_MOVEMENT
                         enemy.direction.y += random.random()*random.choice(rands)*CHAOTIC_MOVEMENT
+                        direction_to_player = self.player.position - enemy.position
+                        enemy.direction += direction_to_player*enemy.state.value
                     
                     # enemy.direction = Vector2(random.random()*random.choice(rands), random.random()*random.choice(rands))
             if state_counter == 60*10:
@@ -184,7 +189,7 @@ class Game():
             
             for enemy in self.enemies:
                 if self.player.position.distance_to(enemy.position) < enemy.size:
-                    if enemy.state == 0:
+                    if enemy.state == EnemyState.ATTACK:
                         print(f"Game Over! Final score: {score}")
                         return
                     else:
@@ -216,7 +221,7 @@ class Game():
                             enemy.warned = -1
                         elif 0 > enemy.warned > (-1*ATTACK_DURATION):
                             enemy.warned -= 1
-                            enemy.direction = (self.player.position - enemy.position)
+                            enemy.direction = (self.player.position - enemy.position) * enemy.state.value
                         
                         elif enemy.warned == -1*ATTACK_DURATION:
                             enemy.deattack()
