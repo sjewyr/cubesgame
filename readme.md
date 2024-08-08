@@ -1,6 +1,6 @@
 # Игрулька с квадратиками
 
-![alt text](figures/image.png)
+![alt text](image.png)
 
 ## Запуск
 ```curl -sSL https://install.python-poetry.org | python3 -```
