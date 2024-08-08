@@ -30,9 +30,9 @@ Q/Right Arrow - Щит
 
 ## EN
  ### Launch
-```curl -sSL https://install.python-poetry.org | python3 -```
-```poetry install```
-```poetry run python game.py```
+```curl -sSL https://install.python-poetry.org | python3 -```  
+```poetry install```  
+```poetry run python game.py```  
 
 ### Gameplay
 The player controls a white square that appears in the center of the screen, the main objective of the game is to destroy all enemies (red squares).  
