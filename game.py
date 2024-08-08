@@ -31,6 +31,8 @@ PLAYER_SHIELD_DURATION = 12 # In frames
 PLAYER_IFRAMES_PER_PARRY = 90
 ENEMY_KNOCKBACK_SPEED = 25
 ENEMY_DEACCELERATION = 2
+PLAYER_INVUL_SPEED = 12
+
 class EnemyState(enum.Enum):
     ATTACK = 1
     RUNAWAY = -1
@@ -96,7 +98,7 @@ class Enemy(MovingObject):
         self.attacking = False
         self.color = (0,255,0) if self.state == EnemyState.RUNAWAY else (255,0,0)
     def update(self):
-        if self.speed > ENEMY_SPEED_MAX:
+        if self.speed > ENEMY_SPEED_MAX and not self.attacking:
             self.speed = max(self.speed - ENEMY_DEACCELERATION, ENEMY_SPEED_MAX)
         if self.stunned:
             self.color = Color(128,0,0)
@@ -127,7 +129,7 @@ class Player(MovingObject):
             self.cooldown = PLAYER_SPRINT_COOLDOWN
 
     def update(self):
-        if self.speed > PLAYER_SPEED:
+        if self.speed > PLAYER_SPEED and not self.invulnerable:
             self.speed = max(PLAYER_SPEED, self.speed-PLAYER_SPEED_DEACCELERATION)
         if self.cooldown:
             self.cooldown -= 1
@@ -244,6 +246,7 @@ class Game():
                             self.enemies.remove(enemy)
                             score += 1500
                             self.player.invulnerable = PLAYER_IFRAMES_PER_PARRY
+                            self.player.speed = PLAYER_INVUL_SPEED
                             continue
                         elif self.player.invulnerable or self.player.shielded:
                             enemy.stunned = 150
