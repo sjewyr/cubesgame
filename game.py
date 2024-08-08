@@ -118,7 +118,7 @@ class Player(MovingObject):
         self.cooldown = 0
         self.shield_cooldown = 0
         self.shielded = 0
-        self.invulnerable = 10000
+        self.invulnerable = 0
 
     def sprint(self):
         if not self.cooldown:
