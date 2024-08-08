@@ -10,8 +10,9 @@
 
 ```poetry install```
 
-```poetry run python game.py```
+```poetry run python game.py```  
 
+Так же для пользователей windows доступен exe файл в папке WIN
 
 ### Геймплей
 
@@ -33,6 +34,8 @@ Q/Right Arrow - Щит
 ```curl -sSL https://install.python-poetry.org | python3 -```  
 ```poetry install```  
 ```poetry run python game.py```  
+
+Alternatively for windows user you can launch the game with the executable in WIN directory
 
 ### Gameplay
 The player controls a white square that appears in the center of the screen, the main objective of the game is to destroy all enemies (red squares).  

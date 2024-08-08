@@ -6,8 +6,9 @@ authors = ["sjewyr <ganshin.2004@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.13"
 pygame = "^2.6.0"
+pyinstaller = "^6.9.0"
 
 
 [build-system]
