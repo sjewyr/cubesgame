@@ -28,10 +28,11 @@ PLAYER_SPEED_DEACCELERATION = 1 # In pixels per frame
 PLAYER_SPRINT_COOLDOWN = 45 # In frames
 PLAYER_SHIELD_COOLDOWN = 60
 PLAYER_SHIELD_DURATION = 12 # In frames
-PLAYER_IFRAMES_PER_PARRY = 90
+PLAYER_IFRAMES_PER_PARRY = 120
 ENEMY_KNOCKBACK_SPEED = 25
 ENEMY_DEACCELERATION = 2
-PLAYER_INVUL_SPEED = 12
+PLAYER_INVUL_SPEED = 15
+PLAYER_INVUL_SIZE = 17
 
 class EnemyState(enum.Enum):
     ATTACK = 1
@@ -141,8 +142,12 @@ class Player(MovingObject):
             self.shielded = max(0, self.shielded-1)
         if self.invulnerable:
             self.color = (255, 0, 255)
+            if self.invulnerable < 40 and self.invulnerable % 2 == 0:
+                self.color = (0,0,0)
+            self.size = PLAYER_INVUL_SIZE
             self.invulnerable = max(0, self.invulnerable-1)
             if self.invulnerable == 0:
+                self.size = PLAYER_SIZE
                 self.color = (255,255,255)
     
     def shield(self):
@@ -251,7 +256,7 @@ class Game():
                         elif self.player.invulnerable or self.player.shielded:
                             enemy.stunned = 150
                             if self.player.invulnerable:
-                                enemy.stunned += 120
+                                enemy.stunned += 150
                             direction_to_player = enemy.direction - self.player.direction
                             enemy.direction = direction_to_player * -1
                             enemy.speed = ENEMY_KNOCKBACK_SPEED
