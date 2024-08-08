@@ -104,6 +104,9 @@ class Enemy(MovingObject):
         if self.stunned:
             self.color = Color(128,0,0)
             self.stunned -= 1
+            if self.stunned < 50 and self.stunned % 3 == 0:
+                self.color = (200,200,200)
+
             if self.stunned == 0:
                 self.color = (0,255,0) if self.state == EnemyState.RUNAWAY else (255,0,0)
     def draw(self):
